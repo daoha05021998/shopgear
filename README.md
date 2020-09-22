@@ -9,4 +9,7 @@
 npm i 
 ```
 3. Config .env
-4. Run by ``` npm start ```
+4. Run project by
+```bash
+npm start 
+```
