@@ -4,6 +4,9 @@
 
 
 1. Clone repo into computer
-2. Run in cmd or git ``` npm i ```
+2. Run in cmd or git 
+```bash
+npm i 
+```
 3. Config .env
 4. Run by ``` npm start ```
