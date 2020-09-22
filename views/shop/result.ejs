@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head') %>
+  <style>
+    .products {
+      margin-top: 7vh;
+    }
+
+    .h-link {
+      margin-top: 3rem;
+      width: 65%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .filter {
+      width: 65%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    div div .card .card-custom:hover {
+      opacity: 0.8;
+      background-color: black;
+      /* color: blue !important; */
+    }
+
+    img.card-img-top:hover {
+      opacity: 0.7 !important;
+    }
+
+    .title {
+      background-color: red;
+      text-align: center;
+    }
+
+    a:not([href]) {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:not([href]):hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    .card-body .card-title {
+      font-size: 1rem;
+      height: 2.5rem;
+    }
+
+    .card {
+      border-top: 2px solid black;
+    }
+
+    .new-product-percent {
+      background: url("../images/icon-saleoff.png") no-repeat scroll center center transparent;
+      position: absolute;
+      width: 48px;
+      height: 51px;
+      bottom: 65px;
+      right: 30px;
+      text-align: center;
+      vertical-align: middle;
+      color: #180733;
+      font-size: 16px;
+      padding-top: 14px;
+    }
+
+    span.ico-product.ico-new {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      padding: 5px 16px;
+      background: rgb(211, 21, 21);
+      color: #FFF;
+      font-weight: bold;
+      font-size: 0.75rem;
+    }
+
+    .mobilecity-messenger {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      background: #fff;
+      background-image: url(/assets/img/messenger.jpg);
+      background-repeat: no-repeat;
+      background-size: 80% auto;
+      background-position: center;
+      box-shadow: 1px 1px 5px 0 #333;
+      bottom: 20px;
+      left: 20px;
+      border-radius: 100%;
+      z-index: 10000;
+    }
+
+    @media (max-width: 768px) {
+      body>div:nth-child(3) {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<header>
+  <%- include('../partials/header') %>
+</header>
+
+
+<body style="margin-top: 1rem;">
+  <% if(breadcrumbLink.length>0) {%>
+  <div class="h-link">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[0] %>">Trang chủ</a></li>
+        <% if( breadcrumbLink[1] === "/hotsale" ) { %>
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[1] %>">Hotsale</a></li>
+        <% }else if(products[0].type === "keyboard" ) { %>
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[1] %>">Bàn phím</a></li>
+        <% }else if(products[0].type === "chair" ) { %>
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[1] %>">Ghế</a></li>
+        <% }else if(products[0].type === "headphone" ) { %>
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[1] %>">Tai nghe</a></li>
+        <% }else if(products[0].type === "combo" ) { %>
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[1] %>">Combo</a></li>
+        <% }else { %>
+        <li class="breadcrumb-item"><a href="<%= breadcrumbLink[1] %>">Chuột</a></li>
+        <% } %>
+        <% if(breadcrumbLink[2] != undefined) { %>
+        <li class="breadcrumb-item active" aria-current="page"><%= breadcrumbLink[2] %></li>
+        <% } %>
+      </ol>
+    </nav>
+  </div>
+  <% } %>
+  <% if(state){ %>
+  <h1 style="text-align: center; margin-top: 15vh; margin-bottom: 38vh; color: red;"><%= state %></h1>
+  <% }else { %>
+  <% let time = new Date(); let d = time.getDate(); let m =time.getMonth(); y = time.getFullYear() %>
+
+  <div class="input-group filter">
+    <h4 class="mr-5">Bộ lọc</h4>
+    <!-- <select class="custom-select" id="company" name="company" aria-label="Example select with button addon">
+      <option value="" selected>Chọn bộ lọc</option>
+      <option value="1">One</option>
+      <option value="2">Two</option>
+      <option value="3">Three</option>
+    </select> -->
+    <select class="custom-select" id="sort" name="sort" aria-label="Example select with button addon">
+      <option value="" selected>Chọn bộ lọc giá</option>
+      <option value="low2hight">Giá thấp tới cao</option>
+      <option value="hight2low">Giá cao tới thấp</option>
+    </select>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" id="btnFilter" type="submit">Lọc</button>
+    </div>
+  </div>
+
+  <% if(arrCompany.length != 0 ) {%>
+  <div class="input-group filter mt-4">
+    <% for (const x of arrCompany) { %>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" id="<%= x %>" value="<%= x %>" name="company" class="custom-control-input">
+      <label class="custom-control-label" for="<%= x %>"><%= x %></label>
+    </div>
+    <% } %>
+    <div class="custom-control custom-radio custom-control-inline">
+      <button class="btn btn-outline-secondary mr-4" onclick="resetProduct()">Hủy</button>
+      <button class="btn btn-outline-danger" onclick="checkCompany()">Lọc</button>
+    </div>
+  </div>
+  <% } %>
+
+  <div class="products">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+        <% for(let i = 0; i < products.length; i++ ) { %>
+
+        <div class="<%=  products[i].company %> col mb-3 <%=  "product" %>">
+          <a href="/post/<%= products[i]._id %>">
+            <div class="card h-100 card-hover shadow" style="border-radius: .5rem .5rem 1rem 1rem">
+              <% let day = products[i].published.getDate(); let month = products[i].published.getMonth();let year = products[i].published.getFullYear(); %>
+              <% if( (day + 30 - d) % 30 <= 7 && (month+1) == (m+1) && year == y ) { %>
+              <span class="ico-product ico-new"> Mới</span>
+              <% } %>
+              <img src="<%= products[i].img %>" class="card-img-top" alt="...">
+              <hr style="margin: 0.5rem 0; border-top: 1px solid rgba(0,0,0,.6);">
+              <div class="card-body" style="padding-top: 0.2rem;">
+                <h5 class="card-title text-dark"><%= products[i].name %></h5>
+
+                <% if(products[i].sale != 0) { %>
+                <div class="product-row-info">
+                  <div class="product-row-price text-dark pl-2"><del
+                      style="font-size: 0.95rem;"><%= products[i].price.toLocaleString() %></del>₫<br><span
+                      class="product-row-sale text-danger"><%= (Math.floor(products[i].price/10000 - (products[i].price/10000 * products[i].sale / 100)) * 10000).toLocaleString()  %>đ</span>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="new-product-percent">-<%= products[i].sale %>%</div>
+                <% }else { %>
+                <div class="product-row-info">
+                  <div class="product-row-price text-dark pl-2"><br><span
+                      class="product-row-sale text-danger"><%= (Math.floor(products[i].price/10000 - (products[i].price/10000 * products[i].sale / 100)) * 10000).toLocaleString()  %>đ</span>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+
+                <% } %>
+
+                <% if(products[i].sale != 0) { %>
+                <div class="new-product-percent">-<%= products[i].sale %></div>
+                <% } %>
+                <% if(products[i].amount - products[i].sold === 0) {%>
+                <a href="" class="btn btn-danger mt-1 disabled">Hết hàng</a>
+                <% }else { %>
+                <a class="btn btn-primary mt-1" onclick="addToCart('<%= products[i]._id %>')">Thêm vào
+                  giỏ</a>
+                <% } %>
+              </div>
+            </div>
+          </a>
+        </div>
+        <% } %>
+
+
+      </div>
+    </div>
+  </div>
+  <script>
+    function addToCart(productId) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          let a = JSON.parse(this.responseText);
+          document.getElementById("totalQty").innerHTML = a.totalQty;
+        }
+      };
+      xhttp.open("GET", "/add-to-cart/" + productId, true);
+      xhttp.send();
+    }
+    //const company = document.getElementById('company');
+    const sort = document.getElementById('sort');
+    const btnFilter = document.getElementById('btnFilter');
+    let url = window.location.href;
+
+    function check() {
+      if (sort.value == '') {
+        btnFilter.disabled = true;
+      } else {
+        btnFilter.disabled = false;
+      }
+    }
+    window.onload = check;
+    window.onload = function () {
+      if (url.includes("low2hight")) {
+        sort.value = "low2hight";
+      } else if (url.includes("hight2low")) {
+        sort.value = "hight2low";
+      } else {
+        sort.value = "";
+      }
+    }
+    //company.onchange = check;
+    sort.onchange = check;
+    btnFilter.onclick = function checkBtn() {
+      url = window.location.href;
+      if (url.includes('type')) {
+        if (url.includes('sort')) {
+          url = url.substr(0, url.indexOf("sort") - 1);
+          window.location.href = `${url}&sort=${sort.value || null}`;
+        }
+        window.location.href = `${url}&sort=${sort.value || null}`;
+      } else {
+        if (url.includes('sort')) {
+          url = url.substr(0, url.indexOf("?sort"));
+        } else {
+          url = url;
+        }
+        window.location.href = `${url}?sort=${sort.value || null}`;
+
+      }
+    }
+    const company = document.getElementsByName("company");
+    const y = document.getElementsByClassName("product");
+    function checkCompany() {
+      let x = [];
+      for (let z of y) {
+        z.hidden = false;
+      }
+      for (i = 0; i < company.length; i++) {
+        if (!company[i].checked) {
+          x = document.getElementsByClassName(company[i].value);
+          for (let z of x) {
+            z.hidden = true;
+          }
+        }
+      }
+    }
+    function resetProduct() {
+      for (let z of y) {
+        z.hidden = false;
+      }
+      for (i = 0; i < company.length; i++) {
+        if (company[i].checked) {
+          company[i].checked = false;
+        }
+      }
+    }
+
+  </script>
+  <% } %>
+  <a class="mobilecity-messenger" href="https://m.me/dao.ha.1998" target="_blank"></a>
+
+  <%- include('../partials/footer') %>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<!-- Bỏ -->
+<head>
+    <title>Thông báo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .header,
+        .footer {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header h3 {
+            margin-top: 0;
+            margin-bottom: 0;
+            line-height: 40px;
+        }
+
+        .footer {
+            padding-top: 19px;
+            color: #777;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .pay-success {
+            color: blue;
+        }
+
+        .pay-unsuccess {
+            color: black;
+        }
+
+        .footer {
+            text-align: center
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header clearfix">
+            <h3 class="text-muted">VNPAY DEMO</h3>
+        </div>
+        <% if(code == '00') { %>
+        <p class="pay-success" style="text-align: center"> GD thành công</p>
+        <% } else { %>
+        <p class="pay-unsuccess" style="text-align: center"> GD thất bại</p>
+        <% } %>
+        <footer class="footer">
+            <p>&copy; VNPAY <%= new Date().getFullYear() %></p>
+        </footer>
+    </div>
+</body>
+
+</html>

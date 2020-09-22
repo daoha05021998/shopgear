@@ -1,0 +1,131 @@
+<div class="sidebar" data-color="white" data-active-color="danger">
+  <!--
+    sua cho nay
+      Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+  -->
+  <div class="logo">
+    <a href="/admin" class="simple-text logo-mini">
+      <div class="logo-image-small">
+        <img src="/assets/img/logo-small.png">
+      </div>
+    </a>
+    <a href="/admin" class="simple-text logo-normal">
+      <%= session.name %>
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+
+      <% if(tab === 'dashboard') { %>
+      <li class="active ">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin">
+          <i class="nc-icon nc-bank"></i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+
+      <% if(tab === 'category') { %>
+        <li class="active">
+          <% } else {%>
+        <li>
+          <% } %>
+          <a href="/admin/listCategories">
+            <i class="nc-icon nc-bullet-list-67"></i>
+            <p>Danh mục</p>
+          </a>
+        </li>
+
+      <% if(tab === 'staffs') { %>
+      <li class="active">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin/listStaffs">
+          <i class="nc-icon nc-circle-10"></i>
+          <p>Nhân viên</p>
+        </a>
+      </li>
+
+      <% if(tab === 'products') { %>
+      <li class="active">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin/listProducts">
+          <i class="nc-icon nc-bag-16"></i>
+          <p>Sản phẩm</p>
+        </a>
+      </li>
+
+      <% if(tab === 'users') { %>
+      <li class="active">
+        <% } else { %>
+      <li>
+        <% } %>
+        <a href="/admin/listUsers">
+          <i class="nc-icon nc-badge"></i>
+          <p>Người dùng</p>
+        </a>
+      </li>
+
+      <% if(tab === 'bills') { %>
+      <li class="active">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin/listBills">
+          <i class="nc-icon nc-credit-card"></i>
+          <p>Đơn hàng</p>
+        </a>
+      </li>
+
+      <% if(tab === 'logs') { %>
+      <li class="active">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin/listLogs">
+          <i class="nc-icon nc-single-copy-04"></i>
+          <p>Nhật ký</p>
+        </a>
+      </li>
+
+      <% if(tab === 'posts') { %>
+      <li class="active">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin/listPosts">
+          <i class="nc-icon nc-caps-small"></i>
+          <p>Bài viết</p>
+        </a>
+      </li>
+
+      <% if(tab === 'slides') { %>
+      <li class="active">
+        <% } else {%>
+      <li>
+        <% } %>
+        <a href="/admin/listSlides">
+          <i class="nc-icon nc-image"></i>
+          <p>Slide</p>
+        </a>
+      </li>
+
+      <% if(tab === 'statistical') { %>
+        <li class="active">
+          <% } else {%>
+        <li>
+          <% } %>
+          <a href="/admin/statistical">
+            <i class="nc-icon nc-chart-bar-32"></i>
+            <p>Thống kê</p>
+          </a>
+        </li>
+
+    </ul>
+  </div>
+</div>

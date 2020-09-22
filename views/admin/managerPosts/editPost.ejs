@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Sửa Post</title>
+    <%- include ('../../partials/headDashboard') %>
+    <style>
+        .row-editor .editor {
+            width: 18.5cm;
+            height: 100%;
+            min-height: 10cm;
+            padding: 0.75cm 0.5cm;
+            margin: 1.5rem;
+            border: 1px hsl(0, 0%, 82.7%) solid;
+            background-color: #fff;
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
+        }
+
+        .row-editor {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            overflow-y: auto;
+            background-color: #f2f2f2;
+            border: 1px solid hsl(0, 0%, 77%);
+        }
+    </style>
+</head>
+
+<body class="">
+    <div class="wrapper ">
+
+        <%- include ('../../partials/sidebarDashboard') %>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+
+            <%- include ('../../partials/navDashboard') %>
+
+            <!-- End Navbar -->
+
+            <div class="content">
+                <h1 style="text-align: center">SỬA POST</h1>
+                <div class="container">
+                    <% if(notification != "") {  %>
+                    <div class="alert alert-danger fade show" role="alert">
+                        <strong><%= notification %></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% } %>
+
+                    <form action="/admin/editPost/<%= post._id %>" method="post">
+                        <div class="form-group">
+                            <label for="title">Tiêu đề: </label>
+                            <input type="text" class="form-control" id="title" name="title" value="<%= post.title %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="link">Tên không dấu: </label>
+                            <input type="text" class="form-control" id="link" name="link" value="<%= post.link %>"
+                                required>
+                        </div>
+                        <div class=" form-group" >
+                            <label for="demo">Tóm tắt nội dung bài viết: </label>
+                            <input type="text" class="form-control" id="demo" name="demo" value="<%= post.demo %>">
+                        </div>
+                        <div class=" form-group" hidden>
+                            <label for="content">Nội dung bài viết: </label>
+                            <input type="text" class="form-control" id="content" name="content">
+                        </div>
+
+                        <div class="centered">
+                            <div class="row">
+                                <div class="document-editor__toolbar"></div>
+                            </div>
+                            <div class="row row-editor">
+                                <div class="editor">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-danger ml-1 mb-4" data-toggle="modal"
+                            data-target="#editModal">
+                            Lưu
+                        </button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cảnh báo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Bạn có chắc muốn lưu ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Hủy</button>
+                                        <button type="submit" id="submit" class="btn btn-primary">Xác nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <%- include ('../../partials/footerDashboard') %>
+
+        </div>
+    </div>
+
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script>
+        DecoupledDocumentEditor
+            .create(document.querySelector('.editor'), {
+
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'fontSize',
+                        'fontFamily',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strikethrough',
+                        'fontColor',
+                        'highlight',
+                        'fontBackgroundColor',
+                        '|',
+                        'alignment',
+                        '|',
+                        'numberedList',
+                        'bulletedList',
+                        '|',
+                        'indent',
+                        'outdent',
+                        '|',
+                        'link',
+                        'blockQuote',
+                        'imageUpload',
+                        'insertTable',
+                        'mediaEmbed',
+                        '|',
+                        'undo',
+                        'redo'
+                    ]
+                },
+                language: 'vi',
+                image: {
+                    toolbar: [
+                        'imageTextAlternative',
+                        'imageStyle:full',
+                        'imageStyle:side'
+                    ]
+                },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells'
+                    ]
+                },
+                licenseKey: '',
+
+            })
+            .then(editor => {
+                window.editor = editor;
+                editor.setData(`<%- post.content %>`);
+                // Set a custom container for the toolbar.
+                document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
+                document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        document.querySelector('#submit').addEventListener('click', () => {
+            const editorData = window.editor.getData();
+            document.getElementById("content").value = editorData;
+        });
+    </script>
+
+    <!--   Core JS Files   -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script src="/assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+    <script src="/assets/demo/demo.js"></script>
+</body>
+
+</html>

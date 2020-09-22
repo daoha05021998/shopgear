@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Check out</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        body {
+            color: white;
+        }
+
+        .container {
+            max-width: 960px;
+        }
+
+        .lh-condensed {
+            line-height: 1.25;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark">
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="" alt="" width="72" height="72">
+            <h2>Thông tin thanh toán</h2>
+            <p class="lead">Vui lòng nhập đầy đủ!</p>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h4 class="mb-3">Thông tin</h4>
+                <form validate class="needs-validation" action="/order/create_payment_url" method="post">
+                    <div class="mb-3">
+                        <label for="fullName">Tên đầy đủ</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="" value=""
+                            required>
+                        <div class="invalid-feedback">
+                            Yêu cầu tên đầy đủ!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone-number">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="phone-number" name="pnumber"
+                            placeholder="0376214088" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập số điện thoại!
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="city">Tỉnh/Thành Phố</label>
+                        <select class="form-control" id="city" name="city">
+                            <option value="" selected>--- Chọn thành phố của bạn ---</option>
+                            <option value="1">TP Hà Nội</option>
+                            <option value="2">Thành Phố Hồ Chí Minh</option>
+                            <option value="3">Tỉnh Nam Định</option>
+                            <option value="4">Tỉnh Vĩnh Phúc</option>
+                            <option value="5">Tỉnh Thái Bình</option>
+                            <option value="6">Tỉnh Hải Dương</option>
+                            <option value="7">TP Đà Nẵng</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="subCity">Quận/Huyện</label>
+                        <select class="form-control" id="subCity" name="subCity">
+                            <option value="" selected>--- Chọn quận huyện của bạn ---</option>
+
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Địa chỉ ship đến</label>
+                        <input type="text" class="form-control" id="address" name="address"
+                            placeholder="Quoc Oai, Ha Noi" required>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập địa chỉ!
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button id="" class="btn btn-primary btn-lg btn-block" type="submit">Check Out</button>
+                    <a name="" id="" class="btn btn-danger btn-lg btn-block" href="/shopping-cart" role="button">Hủy</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script>
+        const city = document.getElementById('city');
+        const subCity = document.getElementById('subCity');
+        const protocol = window.location.protocol;
+        const hostname = window.location.hostname;
+        const port = ':' + window.location.port || '';
+        city.onchange = getCity;
+        function getCity() {
+            fetch(`${protocol}//${hostname}${port}/api/v1/location`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    let arrSubCity = data[city.value].districts;
+                    console.log(arrSubCity)
+                    let htmlCity = [];
+                    for (x in arrSubCity) {
+                        htmlCity.push(`<option value="${x}">${arrSubCity[x]}</option>`);
+                    }
+                    subCity.innerHTML = htmlCity;
+                });
+        } 
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+
+</body>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2020-2021 Company Name</p>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Privacy</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+</footer>
+
+</html>

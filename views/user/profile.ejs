@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>
+        Trang cá nhân
+    </title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+        .navbar {
+            height: 60px !important;
+        }
+
+        body {
+            min-height: 100%;
+        }
+
+        li {
+
+            font-size: 20px;
+        }
+        div.nav-brand > a {
+        color: rgba(255, 255, 255, .5);
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/header') %>
+    </header>
+
+    <% if(notification != "") {  %>
+    <div class="alert alert-success fade show mt-5" role="alert">
+        <strong><%= notification %></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% } %>
+    <div class="mt-5">
+        <h1 style="color: red; margin-left: 50px; float: left;">Thông tin cá nhân</h1>
+        <a name="" id="" style="float: right; margin-top: 10px; margin-left: 5px; margin-right: 20px;"
+            class="btn btn-primary" href="/users/changeInformation" role="button">Thay đổi thông tin</a>
+        <a name="" id="" style="float: right; margin-top: 10px;" class="btn btn-primary" href="/users/changePassword"
+            role="button">Đổi mật khẩu</a>
+    </div>
+    <hr style="clear: both">
+    <h2 style="text-align: center; color: indigo; clear: both;">Danh sách Orders</h2>
+    <div class="container">
+
+        <% for(let j = 0; j< bills.length; j++) { %>
+        <div class="row">
+            <div class="col">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class="card-title d-flex justify-content-between">
+                            <% let date = new Date(bills[j].date); %>
+                            <% let timeMilliseconds = Date.now() %>
+                            <% let time ='Ngày ' + date.getDate() + ' Tháng ' + parseInt(date.getMonth()+1)+ ' Năm ' + date.getFullYear() + ' - '+ parseInt(date.getHours() + 7)%24 + ' Giờ ' + date.getMinutes() + ' Phút'%>
+                            <div class=""><%= time %></div>
+                            <% if(bills[j].time){ %>
+                            <div>Nhận hàng khoảng: <%= bills[j].time %></div>
+                            <% } %>
+                            <div class="">Mã HĐ: <%= bills[j].id %> </div>
+                        </div>
+                        <% if( timeMilliseconds - date.getTime() <= (15 * 60 * 1000) ) { %>
+                        <ul class="list-group d-flex justify-content-between">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Bạn có 15 phút để hủy đơn kể từ khi đặt hàng
+                                <a name="" id="" class="btn btn-danger" href="/order/cancelBill/<%= bills[j].id %>" role="button">Hủy đơn hàng</a>
+                            </li>
+                        </ul>
+                        <% } %>
+                        <ul class="list-group d-flex justify-content-between">
+                            <% for(let i = 0; i < bill[j].length; i++) { %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <%= bill[j][i].item.name %> || Số lượng: <%= bill[j][i].qty %>
+                                <span class="badge badge-primary badge-pill">
+                                    <%= (Math.floor(bill[j][i].item.price/10000 - (bill[j][i].item.price/10000 * bill[j][i].item.sale / 100)) * 10000).toLocaleString() %>
+                                    VND</span>
+                            </li>
+                            <% } %>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center ">
+                                    <div>Người nhận: <%= bills[j].fname %></div>
+                                    <div>SĐT: <%= bills[j].phone %></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div>
+                                    <div>Địa chỉ: <%= bills[j].address %></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <strong class="">Giá: <%= bills[j].cart.totalPrice.toLocaleString() %>đ - Phí Ship:
+                            <%= bills[j].feeShip.toLocaleString() %>
+                            đ</strong>
+
+                        <% if(bills[j].state === 'Đang chuẩn bị hàng'){ %>
+                        <span class=" text-warning bold">Đang chuẩn bị hàng</span>
+                        <% }else if(bills[j].state === 'Đang chuyển hàng') { %>
+                        <span class=" text-text-primary bold">Đang chuyển hàng</span>
+                        <% }else {%>
+                        <span class=" text-success bold">Đã nhận</span>
+                        <% } %>
+
+                        <% if(bills[j].type === 'onlinePayment'){ %>
+                        <span class=" text-success bold">Thanh toán Online</span>
+                        <% }else { %>
+                        <span class=" text-danger bold">Ship COD</span>
+                        <% } %>
+                        <% if(bills[j].isPay == true){ %>
+                        <span class=" text-success bold">Đã thanh toán</span>
+                        <% }else { %>
+                        <span class=" text-danger bold">Chưa thanh toán</span>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+</html>

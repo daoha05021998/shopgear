@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head') %>
+    <style>
+        body {
+            /* background-color: blanchedalmond; */
+        }
+
+        .cus-container {
+            width: 75% !important;
+            margin: auto;
+            background-color: #FFF;
+            border-radius: .75rem;
+        }
+
+        .bd {
+            width: 80%;
+            margin: 60px auto 45px auto;
+        }
+
+        .title a {
+            color: white;
+        }
+
+        div div .card .card-custom:hover {
+            opacity: 0.8;
+            background-color: black;
+            /* color: blue !important; */
+        }
+
+        img.card-img-top:hover {
+            opacity: 0.7 !important;
+        }
+
+        .title {
+            background-color: #ff0000ab;
+            text-align: center;
+        }
+
+        div.category.row {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        div.category.row .col {
+            padding-right: .5rem;
+            padding-left: .5rem;
+        }
+
+        .card-body .card-title {
+            font-size: 1rem;
+            height: 1.5rem;
+        }
+
+        a:not([href]) {
+            color: white;
+            text-decoration: none;
+        }
+
+        a:not([href]):hover {
+            color: white;
+            text-decoration: none;
+        }
+
+        .row .card {
+            border-top: 1px solid rgba(0, 0, 0, 0.445);
+        }
+
+        div.category.mb-3 .card {
+            border-bottom: 1px solid rgba(255, 0, 0, 0.438);
+        }
+
+        .new-product-percent {
+            background: url("../images/icon-saleoff.png") no-repeat scroll center center transparent;
+            position: absolute;
+            width: 48px;
+            height: 51px;
+            bottom: 65px;
+            right: 30px;
+            text-align: center;
+            vertical-align: middle;
+            color: #180733;
+            font-size: 16px;
+            padding-top: 14px;
+        }
+
+        span.ico-product.ico-new {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 16px;
+            background: rgb(211, 21, 21);
+            color: #FFF;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .mobilecity-messenger {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            background-image: url(/assets/img/messenger.jpg);
+            background-repeat: no-repeat;
+            background-size: 80% auto;
+            background-position: center;
+            box-shadow: 1px 1px 5px 0 #333;
+            bottom: 20px;
+            left: 20px;
+            border-radius: 100%;
+            z-index: 10000;
+        }
+
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-image: url(/assets/img/arrow.svg);
+            color: rgb(40, 110, 190);
+            cursor: pointer;
+            padding: 20px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 768px) {
+            body>div.cus-container>div>h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <%- include('partials/header') %>
+    </header>
+    <% let time = new Date(); let d = time.getDate(); let m =time.getMonth(); y = time.getFullYear() %>
+    <div class="bd" id="bdtop">
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                <% for(let i = 1; i < slides.length; i++ ) { %>
+                <li data-target="#carouselExampleCaptions" data-slide-to="<%= i %>"></li>
+                <% } %>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <a href="<%= slides[0].link %>"><img src="<%= slides[0].url %>" class="d-block w-100 img-fluid"
+                            alt="Noodle"></a>
+                    <div class="carousel-caption d-none d-md-block">
+                    </div>
+                </div>
+                <% for(let i = 1; i < slides.length; i++ ) { %>
+                <div class="carousel-item">
+                    <a href="<%= slides[i].link %>"><img src="<%= slides[i].url %>" class="d-block w-100 img-fluid"
+                            alt="Burger"></a>
+                    <div class="carousel-caption d-none d-md-block">
+                    </div>
+                </div>
+                <% } %>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="cus-container">
+        <div class="category row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-3">
+            <% for (let category of categories) { %>
+            <% if(products[categories.indexOf(category)].length != 0) { %>
+            <div class="card col mb-3"><a href="/search/?type=<%= category.eName %>">
+                    <img src="<%= category.img %>" height="200px" width="310px" class="card-img-top" alt="...">
+                    <div class="card-body p-1">
+                        <h5 class="card-title text-center"><%= category.name %></h5>
+                    </div>
+                </a>
+            </div>
+            <% } %>
+            <% } %>
+        </div>
+        <div class="title d-flex align-items-center mb-1 justify-content-between">
+            <h2 class="ml-2">Hot Sale</h2>
+            <h3 style="font-size: 1.2rem; margin-right: 1rem; color: black;"><a href="/hotsale">Xem thêm <i
+                        class="fas fa-angle-right"></i></a></h3>
+        </div>
+        <div class="hotsale">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+                <% for(let i = 0; i < 4; i++ ) { %>
+                <div class="col mb-3">
+                    <a href="/post/<%= hots[i]._id %>">
+                        <div class="card h-100 card-hover shadow" style="border-radius: .5rem .5rem 1rem 1rem">
+                            <% let day = hots[i].published.getDate(); let month = hots[i].published.getMonth();let year = hots[i].published.getFullYear(); %>
+                            <%  if( day < d  ) { %>
+                            <% if( (d - day)<= 7 && (month+1) == (m+1) && year == y ) { %>
+                            <span class="ico-product ico-new"> Mới</span>
+                            <% } }if (day>d ) { %>
+                            <%  if((day + 30 - d) % 30 <= 7 && (month+1) == (m+1) && year == y) { %>
+                            <span class="ico-product ico-new"> Mới</span>
+                            <% } } %>
+                            <img src="<%= hots[i].img %>" class="card-img-top" alt="...">
+                            <hr style="margin: 0.5rem 0; border-top: 1px solid rgba(0,0,0,.6);">
+                            <div class="card-body" style="padding-top: 0.2rem;">
+                                <h5 class="card-title text-dark"><%= hots[i].name %></h5>
+                                <div class="product-row-info">
+                                    <div class="product-row-price text-dark pl-2"><del
+                                            style="font-size: 0.95rem;"><%= hots[i].price.toLocaleString() %></del>₫<br><span
+                                            class="product-row-sale text-danger"><%= (Math.floor(hots[i].price/10000 - (hots[i].price/10000 * hots[i].sale / 100)) * 10000 ).toLocaleString() %>đ</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <% if(hots[i].sale != 0) { %>
+                                <div class="new-product-percent">-<%= hots[i].sale %>%</div>
+                                <% } %>
+                                <% if(hots[i].amount === 0) {%>
+                                <a href="" class="btn btn-danger mt-1 disabled">Hết hàng</a>
+                                <% }else { %>
+                                <a class="btn btn-primary mt-1" onclick="addToCart('<%= hots[i]._id %>')">Thêm vào
+                                    giỏ</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <% for (let i = 0; i < categories.length;  i++) { %>
+        <% if(products[i].length != 0) { %>
+        <div class="title d-flex align-items-center mb-1 justify-content-between">
+            <h2 class="ml-2"><%= categories[i].name %></h2>
+            <h3 style="font-size: 1.2rem; margin-right: 1rem; color: black;"><a
+                    href="/search?type=<%= categories[i].eName %>">Xem thêm
+                    <i class="fas fa-angle-right"></i></a>
+            </h3>
+        </div>
+        <% } %>
+        <div class="product-<%= categories[i].eName %>">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+                <% for (let product of products[i]) { %>
+                <div class="col mb-3">
+                    <a href="/post/<%= product._id %>">
+                        <div class="card h-100 card-hover shadow" style="border-radius: .5rem .5rem 1rem 1rem">
+                            <% let day = product.published.getDate(); let month = product.published.getMonth();let year = product.published.getFullYear(); %>
+                           
+                            <% if((day + 30 - d) % 30 <= 10 && (month+1) == (m+1) && year == y) { %>
+                            <span class="ico-product ico-new"> Mới</span>
+                            <% } %>
+                            <img src="<%= product.img %>" class="card-img-top" alt="...">
+                            <hr style="margin: 0.5rem 0; border-top: 1px solid rgba(0,0,0,.6);">
+                            <div class="card-body" style="padding-top: 0.2rem;">
+                                <h5 class="card-title text-dark"><%= product.name %></h5>
+                                <% if(product.sale != 0) { %>
+                                <div class="product-row-info">
+                                    <div class="product-row-price text-dark pl-2"><del
+                                            style="font-size: 0.95rem;"><%= product.price.toLocaleString() %></del>₫<br><span
+                                            class="product-row-sale text-danger"><%= (Math.floor(product.price/10000 - (product.price/10000 * product.sale / 100)) * 10000).toLocaleString().toLocaleString()  %>đ</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="new-product-percent">-<%= product.sale %>%</div>
+                                <% }else { %>
+                                <div class="product-row-info">
+                                    <div class="product-row-price text-dark pl-2"><br><span
+                                            class="product-row-sale text-danger"><%= (Math.floor(product.price/10000 - (product.price/10000 * product.sale / 100)) * 10000).toLocaleString()  %>đ</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <% } %>
+                                <% if(product.amount - product.sold === 0) { %>
+                                <a href="" class="btn btn-danger mt-1 disabled">Hết hàng</a>
+                                <% } else { %>
+                                <!-- <a href="/add-to-cart/<%= product._id %>" class="btn btn-primary mt-1">Thêm vào
+                                giỏ</a> -->
+                                <a class="btn btn-primary mt-1" onclick="addToCart('<%= product._id %>')">Thêm vào
+                                    giỏ</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+    <button onclick="topFunction()" id="myBtn" title="Go to top"></button>
+    <a class="mobilecity-messenger" href="https://m.me/dao.ha.1998" target="_blank"></a>
+    <script>
+        function addToCart(productId) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let a = JSON.parse(this.responseText);
+                    document.getElementById("totalQty").innerHTML = a.totalQty;
+                }
+            };
+            xhttp.open("GET", "/add-to-cart/" + productId, true);
+            xhttp.send();
+        }
+        //Get the button
+        const mybutton = document.getElementById("myBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+        const x = screen.height;
+        //console.log(x)
+        function scrollFunction() {
+            if (document.body.scrollTop > x / 2 || document.documentElement.scrollTop > x / 2) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <%- include('partials/footer') %>
+
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bảng điều khiển</title>
+  <%- include('../partials/headDashboard') %>
+</head>
+
+<body class="">
+  <div class="wrapper ">
+
+    <%- include('../partials/sidebarDashboard') %>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+
+      <%- include('../partials/navDashboard') %>
+
+      <!-- End Navbar -->
+
+      <div class="content">
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i class="nc-icon nc-globe text-warning"></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Tất Cả Sản phẩm</p>
+                      <p class="card-title"><%= countProducts %>
+                        <p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="fa fa-refresh"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i class="nc-icon nc-money-coins text-success"></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Tổng số tiền bán được </p>
+                      <p class="card-title"><%= sumMoney.toLocaleString()  %>
+                        <p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="fa fa-calendar-o"></i> Tổng
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="/admin/listBillNotPay">
+              <div class="card card-stats">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-vector text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Bill Chưa thanh toán</p>
+                        <p class="card-title"><%= countBills %>
+                          <p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer ">
+                  <hr>
+                  <div class="stats">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+              </div>
+          </div>
+          </a>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i class="nc-icon nc-favourite-28 text-primary"></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Người dùng</p>
+                      <p class="card-title"><%= countUsers %>
+                        <p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="fa fa-refresh"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header ">
+                <h5 class="card-title">Top sản phẩm bán chạy</h5>
+                <p class="card-category">Trong ngày</p>
+              </div>
+              <div class="card-body ">
+
+                <canvas id="canvas" style="display: block; height: 649px; width: 1298px;" width="1427" height="713"
+                  class="chartjs-render-monitor"></canvas>
+
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="stats">
+                  <i class="fa fa-history"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card ">
+              <div class="card-header ">
+                <h5 class="card-title">Chỉ số mua hàng</h5>
+                <p class="card-category">Online - COD</p>
+              </div>
+              <div class="card-body ">
+
+                <canvas id="chart-area"></canvas>
+
+              </div>
+              <div class="card-footer ">
+                <div class="legend">
+                  <i class="fa fa-circle text-primary"></i> Thanh toán Online
+                  <i class="fa fa-circle text-danger"></i> COD
+                </div>
+                <hr>
+                <div class="stats">
+                  <!-- <i class="fa fa-calendar"></i> Number of emails sent -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <%- include('../partials/footerDashboard') %>
+
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="/assets/js/plugins/chartjs.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="/assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+  <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+
+  <!-- <script src="/assets/demo/demo.js"></script> -->
+
+  <script>
+    demo = {
+      initChartsPages: function () {
+        chartColor = "#FFFFFF";
+
+        var barChartData = {
+          //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          datasets: [{
+<%if(chart.arrObj[0]) {%>
+          label: '<%= chart.arrObj[0].name || null %>',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                  data: [
+					<%= chart.arrObj[0].qty || null %>
+        ]
+                    <% }else{ %>
+                      label: null,
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1,
+      data: [
+        null
+      ]
+        <% } %>
+          }, {
+            <%if (chart.arrObj[1]) {%>
+        label: '<%= chart.arrObj[1].name || null %>',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1,
+                data: [
+        <%= chart.arrObj[1].qty || null %>
+        ]
+                  <% } else { %>
+                    label: null,
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                          borderWidth: 1,
+                            data: [
+                              null
+                            ]
+                              <% } %>
+          }, {
+            <%if (chart.arrObj[2]) {%>
+        label: '<%= chart.arrObj[2].name || null %>',
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1,
+                data: [
+        <%= chart.arrObj[2].qty || null %>
+        ]
+                  <% } else { %>
+                    label: null,
+                      backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                          borderWidth: 1,
+                            data: [
+                              null
+                            ]
+                              <% } %>
+          }, {
+            <%if (chart.arrObj[3]) {%>
+        label: '<%= chart.arrObj[3].name || null%>',
+          backgroundColor: 'rgba(102, 255, 153, 0.2)',
+            borderColor: 'rgba(102, 255, 153, 1)',
+              borderWidth: 1,
+                data: [
+        <%= chart.arrObj[3].qty || null %>
+        ]
+                  <% } else { %>
+                    label: null,
+                      backgroundColor: 'rgba(102, 255, 153, 0.2)',
+                        borderColor: 'rgba(102, 255, 153, 1)',
+                          borderWidth: 1,
+                            data: [
+                              null
+                            ]
+                              <% } %>
+          }, {
+            <%if (chart.arrObj[4]) {%>
+        label: '<%= chart.arrObj[4].name || null %>',
+          backgroundColor: 'rgba(204, 204, 255, 0.2)',
+            borderColor: 'rgba(204, 204, 255, 1)',
+              borderWidth: 1,
+                data: [
+        <%= chart.arrObj[4].qty || null %>
+        ]
+                  <% } else { %>
+                    label: null,
+                      backgroundColor: 'rgba(204, 204, 255, 0.2)',
+                        borderColor: 'rgba(204, 204, 255, 1)',
+                          borderWidth: 1,
+                            data: [
+                              null
+                            ]
+                              <% } %>
+          }, {
+            <%if (chart.arrObj[5]) {%>
+        label: '<%= chart.arrObj[5].name || null %>',
+          backgroundColor: 'rgba(0, 0, 153, 0.2)',
+            borderColor: 'rgba(0, 0, 153, 1)',
+              borderWidth: 1,
+                data: [
+        <%= chart.arrObj[5].qty || null %>
+        ]
+                  <% } else { %>
+                    label: null,
+                      backgroundColor: 'rgba(0, 0, 153, 0.2)',
+                        borderColor: 'rgba(0, 0, 153, 1)',
+                          borderWidth: 1,
+                            data: [
+                              null
+                            ]
+                              <% } %>
+          }
+          ]
+
+        };
+
+    var ctx = document.getElementById('canvas').getContext('2d');
+    myBar = new Chart(ctx, {
+      type: 'bar',
+      data: barChartData,
+      options: {
+        responsive: true,
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1
+            }
+          }]
+        }
+      }
+    });
+
+      ctx = document.getElementById('chart-area').getContext("2d");
+
+    myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: [<%= chart.cod %>, <%= chart.onlP %>],
+          backgroundColor: [
+          '#ef8157',
+          '#4acccd'  
+          
+          ],
+          label: 'Dataset 1'
+        }],
+        labels: [
+          'COD',
+          'OnlinePayment'
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    }
+    );
+
+
+
+      }
+    }
+    $(document).ready(function () {
+      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
+      demo.initChartsPages();
+    });
+  </script>
+</body>
+
+</html>

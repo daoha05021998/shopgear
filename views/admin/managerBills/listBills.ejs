@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Danh sách đơn hàng</title>
+    <%- include('../../partials/headDashboard') %>
+    <style>
+        div.title-custom {
+            height: 4rem !important;
+        }
+    </style>
+
+</head>
+
+<body class="">
+    <div class="wrapper ">
+
+        <%- include('../../partials/sidebarDashboard') %>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+
+            <%- include('../../partials/navDashboard') %>
+
+            <!-- End Navbar -->
+
+            <div class="content">
+                <div class="d-flex mt-3 title-custom justify-content-center lign-items-center">
+                    <div class="flex-grow-1 h1">Danh sách đơn hàng</div>
+                    <form class="mt-2 flex-grow-1 d-flex lign-items-center" action="/admin/searchBill" method="post">
+                        <div class="form-group flex-grow-1 mr-1">
+                            <input name="searchBill" class="form-control mt-2" type="text" required>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-3">Tìm kiếm</button>
+                    </form>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="col-2">
+                        <label class="" for="state">Trạng Thái</label>
+                        <select class="form-control" id="state" name="state">
+                            <% if(state == 'Đang chuẩn bị hàng') { %>
+                            <option value="Đang chuẩn bị hàng" selected>Đang chuẩn bị hàng</option>
+                            <option value="Đang chuyển hàng">Đang chuyển hàng</option>
+                            <% }else if(state == 'Đang chuyển hàng') { %>
+                            <option value="Đang chuẩn bị hàng">Đang chuẩn bị hàng</option>
+                            <option value="Đang chuyển hàng" selected>Đang chuyển hàng</option>
+                            <% }else { %>
+                            <option value="" selected>Chọn loại trạng thái</option>
+                            <option value="Đang chuẩn bị hàng">Đang chuẩn bị hàng</option>
+                            <option value="Đang chuyển hàng">Đang chuyển hàng</option>
+                            <% } %>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="date">Ngày</label>
+                        <input type="date" class="form-control" id="date" name="date" value="<%= date %>" required>
+                    </div>
+                </div>
+
+
+                <div class="container">
+                    <% if(bills.length == null || bills.length === 0 ) { %>
+                    <h1 style="text-align: center; margin-top: 50px;">Không có hóa đơn nào!</h1>
+                    <% }else { %>
+
+                    <% for(let j = 0; j< bills.length; j++) {%>
+                    <a href="/admin/billDetail/<%= bills[j].id %>">
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <% let date = new Date(bills[j].date); %>
+                                    <% let time ='Ngày ' + date.getDate() + ' Tháng ' + parseInt(date.getMonth()+1)+ ' Năm ' + date.getFullYear() + ' - '+ parseInt(date.getHours() + 7)%24 + ' Giờ ' + date.getMinutes() + ' Phút'%>
+                                    <div class="d-flex justify-content-start float-left"><%= time %></div>
+                                    <div class="d-flex justify-content-end">Mã HĐ: <%= bills[j].id %> </div>
+                                </div>
+                                <ul class="list-group">
+                                    <% for(let i = 0; i < bill[j].length; i++) { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <%= bill[j][i].item.name %> || Số lượng: <%= bill[j][i].qty %>
+                                        <span class="badge badge-primary badge-pill">
+                                            <%= (Math.floor(bill[j][i].item.price/10000 - (bill[j][i].item.price/10000 * bill[j][i].item.sale / 100)) * 10000).toLocaleString() %>
+                                            %>
+                                            VND</span>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <strong class="">Giá: <%= bills[j].cart.totalPrice.toLocaleString() %>đ - Phí Ship:
+                                    <%= bills[j].feeShip %> đ</strong>
+                                <% if(bills[j].state === 'Đang chuẩn bị hàng'){ %>
+                                <span class=" text-warning bold">Đang chuẩn bị hàng</span>
+                                <% }else if(bills[j].state === 'Đang chuyển hàng') { %>
+                                <span class=" text-primary bold">Đang chuyển hàng</span>
+                                <% }else {%>
+                                <span class=" text-success bold">Đã nhận</span>
+                                <% } %>
+
+                                <% if(bills[j].type === 'onlinePayment'){ %>
+                                <span class=" text-success bold">Đã thanh toán</span>
+                                <% }else { %>
+                                <span class=" text-danger bold">Ship COD</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </a>
+                    <% } %>
+                    <% } %>
+                </div>
+
+
+            </div>
+
+            <%- include('../../partials/footerDashboard') %>
+
+        </div>
+    </div>
+    <script>
+        const date = document.getElementById('date');
+        const state = document.getElementById('state');
+        const protocol = window.location.protocol;
+        const hostname = window.location.hostname;
+        const port = ':' + window.location.port || '';
+        date.onchange = redirect;
+        async function redirect() {
+            window.location.href = `${protocol}//${hostname}${port}/admin/listBills?date=${date.value}`;
+        }
+        state.onchange = redirectState;
+        async function redirectState() {
+            window.location.href = `${protocol}//${hostname}${port}/admin/listBills?state=${state.value}`;
+        }
+    </script>
+
+    <!--   Core JS Files   -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    
+
+    <script src="/assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+    <script src="/assets/demo/demo.js"></script>
+</body>
+
+</html>

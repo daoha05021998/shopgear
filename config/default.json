@@ -1,0 +1,6 @@
+{
+  "vnp_TmnCode":"VZK57LQ7",
+  "vnp_HashSecret":"SQWGMNMLXSTMFJTEGZMXZLEQXBHIKUCL",
+  "vnp_Url":"http://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+  "vnp_ReturnUrl": "https://shopgear.herokuapp.com/order/vnpay_return"
+}

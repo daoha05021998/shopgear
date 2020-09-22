@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Register</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        body {
+            color: white;
+        }
+
+        .container {
+            max-width: 960px;
+        }
+
+        .lh-condensed {
+            line-height: 1.25;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark">
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="" alt="" width="72" height="72">
+            <h2>Tạo tài khoản</h2>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h4 class="mb-3">Thông tin cá nhân</h4>
+                <% if(hasErrors) {%>
+                <div class="alert alert-danger">
+                    <% for(let i = 0; i < messages.length; i++) {%>
+                    <%= messages[i]%>
+                    <% } %>
+                </div>
+                <% } %>
+                <form validate class="needs-validation" action="/users/register" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">Họ và tên đệm</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder=""
+                                value="" required>
+                            <div class="invalid-feedback">
+                                Họ và tên đệm còn thiếu!
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName">Tên</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder=""
+                                value="" required>
+                            <div class="invalid-feedback">
+                                Tên còn thiếu!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email">Email </label>
+                        <input type="email" class="form-control" id="email" autocomplete="username" name="email" placeholder="you@example.com"
+                            required>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập địa chỉ email của bạn!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password">Mật khẩu</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Mật khẩu</span>
+                            </div>
+                            <input type="password" class="form-control" id="password" autocomplete="new-password" name="password" pattern=".{6,}"
+                                placeholder="Password (6 characters minimum)" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Nhập mật khẩu của bạn!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password1">Nhập lại mật khẩu</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password1" autocomplete="new-password" name="password1" pattern=".{6,}"
+                                placeholder="Confirm Password" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                2 mật khẩu cần giống nhau!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone-number">Điện thoại</label>
+                        <input type="tel" class="form-control" id="phone-number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" name="pnumber"
+                            placeholder="0376214088" required>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập điện thoại của bạn!
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" name="address"
+                            placeholder="Quoc Oai, Ha Noi" required>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập địa chỉ của bạn!
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button id="btnRegister" class="btn btn-primary btn-lg btn-block" type="submit">Tạo</button>
+                    <a class="btn btn-primary btn-lg btn-block" href="login" role="button">Đã có tài khoản</a>
+                </form>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+</body>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; <% let year = new Date().getFullYear() %><%= year + ' - ' + (year + 1) %> </p>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="">Riêng tư</a></li>
+        <li class="list-inline-item"><a href="">Chính sách</a></li>
+        <li class="list-inline-item"><a href="">Hỗ trợ</a></li>
+    </ul>
+</footer>
+
+</html>

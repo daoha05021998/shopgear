@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Chi tiết đơn hàng</title>
+    <%- include('../../partials/headDashboard') %>
+</head>
+
+<body class="">
+    <div class="wrapper ">
+
+        <%- include('../../partials/sidebarDashboard') %>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+
+            <%- include('../../partials/navDashboard') %>
+
+            <!-- End Navbar -->
+
+            <div class="content">
+                <h3 style="text-align: center; color: blue"> Chi tiết đơn hàng </h3>
+                <div class="container">
+                    <% if(notification != "") {  %>
+                    <div class="alert alert-success fade show" role="alert">
+                        <strong><%= notification %></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% } %>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-between">
+                                <% let date = new Date(bills[0].date); %>
+                                <% let time ='Ngày ' + date.getDate() + ' Tháng ' + parseInt(date.getMonth()+1)+ ' Năm ' + date.getFullYear() + ' - '+ parseInt(date.getHours() + 7)%24  + ' Giờ ' + date.getMinutes() + ' Phút'%>
+                                <div><%= time %></div>
+                                <% if(bills[0].state === 'Đang chuẩn bị hàng'){ %>
+                                <a name="" id="" class="btn btn-primary" style="font-size: .5rem;"
+                                    href="/admin/changeStateBill/<%= bills[0]._id %>" role="button">Xác nhận giao
+                                    hàng</a>
+                                <% }else if(bills[0].state === 'Đang chuyển hàng') { %>
+                                <a name="" id="" class="btn btn-primary" style="font-size: .5rem;"
+                                    href="/admin/changeStateBill/<%= bills[0]._id %>" role="button">Xác nhận đã nhận
+                                    hàng</a>
+                                <% }else {%>
+
+                                <% } %>
+
+                                <div>Mã HĐ: <%= bills[0].id %> </div>
+                            </div>
+                            <ul class="list-group">
+                                <% for(let i = 0; i < bill.length; i++ ) { %>
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center ">
+                                        <div class="p-2" style="flex-basis: 80px"><img width="auto" height="65px"
+                                                src="<%= bill[i].item.img %>" alt="">
+                                        </div>
+                                        <div class="p-2" style="flex-basis: 600px">
+                                            <strong><%= bill[i].item.name %></strong>
+                                        </div>
+                                        <div class="p-2"><span class="label label-success ">Giá:
+                                                <%= (Math.floor(bill[i].price/10000 - (bill[i].price/10000 * bill[i].sale / 100)) * 10000).toLocaleString() %></span>
+                                        </div>
+                                        <div class="order-2"><span
+                                                class="badge badge-success float-right"><%= bill[i].qty %></span>
+                                        </div>
+                                    </div>
+
+                                </li>
+                                <% } %>
+                            </ul>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center ">
+                                        <div>Người nhận: <%= bills[0].fname %></div>
+                                        <div>Địa chỉ: <%= bills[0].address %></div>
+                                        <div>SĐT: <%= bills[0].phone %></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <strong class="">Giá: <%= bills[0].cart.totalPrice.toLocaleString() %>đ - Phí Ship: <%= bills[0].feeShip %>
+                                đ</strong>
+
+                            <% if(bills[0].state === 'Đang chuẩn bị hàng'){ %>
+                            <span class=" text-warning bold">Đang chuẩn bị hàng</span>
+                            <% }else if(bills[0].state === 'Đang chuyển hàng') { %>
+                            <span class=" text-primary bold">Đang chuyển hàng</span>
+                            <% }else {%>
+                            <span class=" text-success bold">Đã nhận hàng</span>
+                            <% } %>
+
+                            <% if(bills[0].type === 'onlinePayment'){ %>
+                            <span class=" text-success bold">Thanh toán Online</span>
+                            <% }else { %>
+                            <span class=" text-danger bold">Ship COD</span>
+                            <% } %>
+                            <% if(bills[0].isPay == true){ %>
+                            <span class=" text-success bold">Đã thanh toán</span>
+                            <% }else { %>
+                            <span class=" text-danger bold">Chưa thanh toán</span>
+                            <% } %>
+                        </div>
+
+                        <!-- <div class="card-footer">
+                            <strong>Tong Gia: <%= bills[0].cart.totalPrice %></strong>
+                            <% if(bills[0].paid === false){ %>
+                            <span class="float-right text-danger bold">Not Pay</span>
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-lg btn-block mt-3" data-toggle="modal"
+                            data-target="#payModal">
+                            Save
+                        </button>
+                        <div class="modal fade" id="payModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cảnh báo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Bạn có chắc muốn thay đổi?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Hủy</button>
+                                        <a name="" id="" class="btn btn-primary" href="/admin/isPay/<%= bills[0].id %>"
+                                            role="button">Pay</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }else { %>
+                        <span class="float-right text-success bold">Paid</span>
+                    </div>
+                    <% } %> -->
+                    </div>
+                </div>
+
+            </div>
+
+            <%- include ('../../partials/footerDashboard') %>
+
+        </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    
+
+    <script src="/assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+    <script src="/assets/demo/demo.js"></script>
+</body>
+
+</html>

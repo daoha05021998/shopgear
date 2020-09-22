@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Thống kê</title>
+    <%- include('../../partials/headDashboard') %>
+</head>
+
+<body class="">
+    <div class="wrapper ">
+
+        <%- include('../../partials/sidebarDashboard') %>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+
+            <%- include ('../../partials/navDashboard') %>
+
+            <!-- End Navbar -->
+
+            <div class="content">
+                <% if(notification != "") {  %>
+                <div class="alert alert-success fade show" role="alert">
+                    <strong><%= notification %></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <% } %>
+                <select style="width: 20%; float: right;" id="select" class="form-control">
+                    <% if(selected == 'allBillsOnDay') {%>
+                    <option value="allBillsOnDay" selected>Thống kê đơn hàng theo ngày</option>
+                    <option value="allBillsOnMonth">Thống kê đơn hàng theo tháng</option>
+                    <option value="allProductsOnDay">Thống kê sản phẩm theo ngày</option>
+                    <option value="allProductsOnMonth">Thống kê sản phẩm theo tháng</option>
+                    <% }else if(selected == 'allBillsOnMonth') {%>
+                    <option value="allBillsOnDay">Thống kê đơn hàng theo ngày</option>
+                    <option value="allBillsOnMonth" selected>Thống kê đơn hàng theo tháng</option>
+                    <option value="allProductsOnDay">Thống kê sản phẩm theo ngày</option>
+                    <option value="allProductsOnMonth">Thống kê sản phẩm theo tháng</option>
+                    <% }else if(selected == 'allProductsOnMonth') {%>
+                    <option value="allBillsOnDay">Thống kê đơn hàng theo ngày</option>
+                    <option value="allBillsOnMonth">Thống kê đơn hàng theo tháng</option>
+                    <option value="allProductsOnDay" >Thống kê sản phẩm theo ngày</option>
+                    <option value="allProductsOnMonth" selected>Thống kê sản phẩm theo tháng</option>
+
+                    <% }else{ %>
+                    <option value="allBillsOnDay">Thống kê đơn hàng theo ngày</option>
+                    <option value="allBillsOnMonth">Thống kê đơn hàng theo tháng</option>
+                    <option value="allProductsOnDay" selected>Thống kê sản phẩm theo ngày</option>
+                    <option value="allProductsOnMonth">Thống kê sản phẩm theo tháng</option>
+                    <% } %>
+                </select>
+                <% if(type == 'Day') {%>
+                <h3>Tổng số đơn hàng trong ngày: <%= num %></h3>
+                <h3>Doanh thu theo ngày: <%= sumMoney.toLocaleString()  %> </h3>
+                <% }else{ %>
+                <h3>Tổng số đơn hàng trong tháng: <%= num %></h3>
+                <h3>Doanh thu theo tháng: <%= sumMoney.toLocaleString()  %> </h3>
+                <% } %>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-around align-items-center">
+                        <b>Tên</b>
+                       <b>Số điện thoại</b><b>Địa chỉ</b>
+                    </li>
+                    <% for (let x of bills) {%>
+                    <li class="list-group-item d-flex justify-content-around align-items-center">
+                        <div class="col-4 " style="padding-left: 6%;">
+                            <%= x.fname %>
+                        </div>
+                        
+                        <div class="col-2">
+                            <%= x.phone %>
+                        </div>
+                        <div class="col-3"> 
+                            <%= x.address %>
+                        </div>
+                    </li>
+                    <% } %>
+                </ul>
+
+
+            </div>
+
+            <%- include ('../../partials/footerDashboard') %>
+
+        </div>
+    </div>
+    <script>
+        const select = document.getElementById('select');
+        const protocol = window.location.protocol;
+        const hostname = window.location.hostname;
+        const port = ':' + window.location.port || '';
+        select.onchange = redirect;
+        async function redirect() {
+            window.location.href = `${protocol}//${hostname}${port}/admin/statistical?p=${select.value}`;
+        }
+    </script>
+    <!--   Core JS Files   -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script src="../../assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../../assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+    <script src="../../assets/demo/demo.js"></script>
+</body>
+
+</html>

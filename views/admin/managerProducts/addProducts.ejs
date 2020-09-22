@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Thêm sản phẩm mới</title>
+    <%- include ('../../partials/headDashboard') %>
+    <style>
+        .row-editor .editor {
+            width: 18.5cm;
+            height: 100%;
+            min-height: 10cm;
+            padding: 0.75cm 0.5cm;
+            margin: 1.5rem;
+            border: 1px hsl(0, 0%, 82.7%) solid;
+            background-color: #fff;
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
+        }
+
+        .row-editor {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            overflow-y: auto;
+            background-color: #f2f2f2;
+            border: 1px solid hsl(0, 0%, 77%);
+        }
+    </style>
+</head>
+
+<body class="">
+    <div class="wrapper ">
+
+        <%- include ('../../partials/sidebarDashboard') %>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+
+            <%- include ('../../partials/navDashboard') %>
+
+            <!-- End Navbar -->
+
+            <div class="content">
+                <h1 style="text-align: center">THÊM SẢN PHẨM MỚI</h1>
+                <div class="container">
+                    <% if(notification != "") {  %>
+                    <div class="alert alert-danger fade show" role="alert">
+                        <strong><%= notification %></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% } %>
+                    <form action="/admin/addProducts" method="post">
+                        <h2 class="text-danger">Thông Số Sản Phẩm</h2>
+                        <div class="mb-2 ">
+                            <label for="type">Loại sản phẩm:</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <% for (let category of categories) { %>
+                                <option value="<%= category.eName %>"><%= category.name %></option>
+                                <% } %>
+                                <option value="combo">Combo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Tên sản phẩm:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class=" form-group">
+                            <label for="company">Công ty:</label>
+                            <input type="text" class="form-control" id="company" name="company" required>
+                        </div>
+                        <div class=" form-group">
+                            <label for="price">Giá:</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
+                        </div>
+                        <div class=" form-group">
+                            <label for="img">URL ảnh:</label>
+                            <input type="text" class="form-control" id="img" name="img" required>
+                        </div>
+                        <div class=" form-group">
+                            <label for="sale">Sale:</label>
+                            <input type="number" class="form-control" id="sale" name="sale" required>
+                        </div>
+                        <div class=" form-group">
+                            <label for="amount">Số lượng:</label>
+                            <input type="number" class="form-control" id="amount" name="amount" required>
+                        </div>
+                        <!-- <div class=" form-group">
+                          <label for="state">Tình trạng:</label>
+                          <input type="text" class="form-control" id="state" name="state" required>
+                            </div> -->
+                        <div class="">
+                            <label for="state">Tình trạng:</label>
+                            <select class="form-control" id="state" name="state" required>
+                                <option value="true">Còn hàng</option>
+                                <option value="false">Không bán</option>
+                            </select>
+                        </div>
+                        <div class=" form-group">
+                            <label for="published">Ngày đăng:</label>
+                            <input type="date" class="form-control" id="published" name="published" required>
+                        </div>
+                        <h2 class="text-danger">Bài Viết Về Sản Phẩm</h2>
+                        <div class=" form-group">
+                            <label for="pguarantee">Bảo hành</label>
+                            <input type="number" class="form-control" id="pguarantee" name="pguarantee" required>
+                        </div>
+                        <div class=" form-group">
+                            <label for="pimg">Ảnh</label>
+                            <input type="text" class="form-control" id="pimg" name="pimg" required>
+                        </div>
+                        <div class=" form-group" hidden>
+                            <label for="pcontent">Nội dung bài viết</label>
+                            <input type="text" class="form-control" id="pcontent" name="pcontent">
+                        </div>
+                        <div class="form-group">
+                            <label for="pinfo">Thông số kĩ thuật:</label>
+                            <textarea class="form-control" rows="5" id="pinfo" name="pinfo" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="pled">LED</label>
+                            <select class="form-control" id="pled" name="pled">
+                                <option value="">Không có</option>
+                                <option value="rgb">RGB</option>
+                                <option value="16 triệu màu">16 triệu màu</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="pswitch">Switch</label>
+                            <select class="form-control" id="pswitch" name="pswitch">
+                                <option value="" selected>Không có</option>
+                                <option value="blue">Blue</option>
+                                <option value="red">Red</option>
+                                <option value="brown">Brown</option>
+                                <option value="optical">Quang học</option>
+                            </select>
+                        </div>
+
+                        <div class="centered">
+                            <div class="row">
+                                <div class="document-editor__toolbar"></div>
+                            </div>
+                            <div class="row row-editor">
+                                <div class="editor">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <button type="button" class="btn btn-danger ml-1 mb-4" data-toggle="modal"
+                            data-target="#editModal">
+                            Lưu
+                        </button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cảnh báo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Bạn có chắc muốn lưu ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Hủy</button>
+                                        <button type="submit" id="submit" class="btn btn-primary">Xác nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+
+            </div>
+
+            <%- include ('../../partials/footerDashboard') %>
+
+        </div>
+    </div>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script>
+        DecoupledDocumentEditor
+            .create(document.querySelector('.editor'), {
+
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'fontSize',
+                        'fontFamily',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strikethrough',
+                        'fontColor',
+                        'highlight',
+                        'fontBackgroundColor',
+                        '|',
+                        'alignment',
+                        '|',
+                        'numberedList',
+                        'bulletedList',
+                        '|',
+                        'indent',
+                        'outdent',
+                        '|',
+                        'link',
+                        'blockQuote',
+                        'imageUpload',
+                        'insertTable',
+                        'mediaEmbed',
+                        '|',
+                        'undo',
+                        'redo'
+                    ]
+                },
+                language: 'vi',
+                image: {
+                    toolbar: [
+                        'imageTextAlternative',
+                        'imageStyle:full',
+                        'imageStyle:side'
+                    ]
+                },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells'
+                    ]
+                },
+                licenseKey: '',
+
+            })
+            .then(editor => {
+                window.editor = editor;
+
+                // Set a custom container for the toolbar.
+                document.querySelector('.document-editor__toolbar').appendChild(editor.ui.view.toolbar.element);
+                document.querySelector('.ck-toolbar').classList.add('ck-reset_all');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        document.querySelector('#submit').addEventListener('click', () => {
+            const editorData = window.editor.getData();
+            document.getElementById("pcontent").value = editorData;
+        });
+    </script>
+
+    <!--   Core JS Files   -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+
+    <script src="/assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+    <script src="/assets/demo/demo.js"></script>
+</body>
+
+</html>
