@@ -1,4 +1,4 @@
-[Demo web site](https://shopgear.herokuapp.com/)
+
 
 # Install
 
@@ -13,3 +13,5 @@ npm i
 ```bash
 npm start 
 ```
+# Demo
+[Shopgears](https://shopgear.herokuapp.com/)
