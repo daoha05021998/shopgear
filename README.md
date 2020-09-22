@@ -4,6 +4,6 @@
 
 
 1. Clone repo into computer
-2. Git ```php npm i ```
+2. Run in cmd or git ``` npm i ```
 3. Config .env
-4. Run by ```bash npm start ```
+4. Run by ``` npm start ```
