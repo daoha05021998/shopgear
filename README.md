@@ -1,6 +1,6 @@
 [Demo web site](https://shopgear.herokuapp.com/)
 
-#Install
+# Install
 
 
 1. Clone repo into computer
